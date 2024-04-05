@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+//SubArray with k different integer
+/*/Brute Force
+void SubAray(vector<int>v,int k) {
+    int n=v.size();
+    int cnt=0;
+    for(int i=0; i<n; i++) {
+        set<int>st;
+        for(int j=i; j<n; j++) {
+            st.insert(v[j]);
+            if(st.size()==k) {
+                cnt++;
+            }
+            else if(st.size()>k)break;
+        }
+    }
+    cout<<cnt<<endl;
+//TC : O(n^2)    SC : O(n)
+}*/
+//Batter
+int f(vector<int>,int);
+void SubAray(vector<int>v,int k) {
+    cout<<f(v,k)-f(v,k-1)<<endl;
+
+}
+//f(k)-f(k-1) concept
+//T C : O(4n) S C: O(n)
+int f(vector<int>v,int k) {
+    if(k<0)return 0;
+    int i=0,j=0;
+    int cnt=0;
+    int n=v.size();
+    unordered_map<int,int>m;
+    while(i<n) {
+        m[v[i]]++;
+        while(j<i && m.size()>k) {
+            m[v[j]]--;
+            j++;
+            if(m[v[j-1]]==0) {
+                m.erase(v[j-1]);
+            }
+        }
+        if(m.size()<=k) {
+            cnt+=(i+1-j);
+        }
+        i++;
+    }
+    return cnt;
+}
+
+int main() {
+    vector<int>v= {1,2,1,3,4};
+    int k=3;
+    SubAray(v,k);
+
+
+    return 0;
+}
